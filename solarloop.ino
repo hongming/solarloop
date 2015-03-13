@@ -24,6 +24,8 @@ void setup() {
   Serial.begin(9600);
   Wire.begin();
   rtc.begin();
+//      rtc.adjust(DateTime(F(__DATE__),F(__TIME__)));
+
   if(!rtc.isrunning()){
     Serial.println("Check your RTC!");
     rtc.adjust(DateTime(F(__DATE__),F(__TIME__)));
@@ -33,7 +35,20 @@ void setup() {
 
 void loop() {
   DateTime loopnow = rtc.now();
-  Serial.println(loopnow.year()+'-'+loopnow.month()+'-'+loopnow.day());
+
+  Serial.print(loopnow.year());
+  Serial.print("-");
+  Serial.print(loopnow.month());
+  Serial.print("-");
+  Serial.print(loopnow.day());
+  Serial.print("-");
+  Serial.print(loopnow.hour()); 
+   Serial.print("-");
+  Serial.print(loopnow.minute()); 
+    Serial.print("-");
+  Serial.print(loopnow.second());
+    Serial.println("cool");
+//  Serial.println(loopnow.year()+'-'+loopnow.month()+'-'+loopnow.day());
   solarloop.time(loopnow.year(),loopnow.month(),loopnow.day(),loopnow.hour(),loopnow.minute(),loopnow.second());
   solarloop.calculations();
   loop_sunrise =solarloop.sunrise_time();
@@ -47,11 +62,12 @@ void loop() {
     loop_currenttime >= (loop_sunset-loop_timeoffset) ) 
     
   ){
-    loop_leds = 255;
+    loop_leds = 65535;
   }
   else
   {
     //speicific led
+    loop_leds = 65535;
 
   }
   //ShiftOUT
